@@ -182,6 +182,8 @@ class Animation(Composition, VisualObject):
         Scales the animation so it fits in width/height
         """
         if self.width != width or self.height != height:
+            old_height = self.height
+            old_width = self.width
             self.to_precomp()
 
             scale = min(width/self.width, height/self.height)
@@ -189,6 +191,11 @@ class Animation(Composition, VisualObject):
             self.height = height
 
             self.layers[0].transform.scale.value *= scale
+
+            if old_height < old_width:
+                self.layers[0].transform.position.value.y = (height - (old_height * scale)) / 2
+            elif old_height > old_width:
+                self.layers[0].transform.position.value.x = (width - (old_width * scale)) / 2
 
     def tgs_sanitize(self):
         """!

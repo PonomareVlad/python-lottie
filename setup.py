@@ -48,7 +48,7 @@ extras_require = {
 extras_require["all"] = list(reduce(lambda a, b: a | b, map(set, extras_require.values())))
 
 setuptools.setup(
-    name="lottie",
+    name="lottie-ps",
     version=version,
     author="Mattia Basaglia",
     author_email="mattia.basaglia@gmail.com",

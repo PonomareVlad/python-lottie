@@ -12,7 +12,7 @@ class EffectValue(VisualObject):
     """
     ## %Effect value type.
     type = None
-    _classses = {}
+    _classes = {}
 
     _props = [
         LottieProp("effect_index", "ix", int, False),
@@ -26,12 +26,12 @@ class EffectValue(VisualObject):
 
     @classmethod
     def _load_get_class(cls, lottiedict):
-        if not EffectValue._classses:
-            EffectValue._classses = {
+        if not EffectValue._classes:
+            EffectValue._classes = {
                 sc.type: sc
                 for sc in EffectValue.__subclasses__()
             }
-        return EffectValue._classses[lottiedict["ty"]]
+        return EffectValue._classes.get(lottiedict["ty"], EffectValueSlider)
 
     def __str__(self):
         return self.name or super().__str__()
@@ -44,7 +44,7 @@ class Effect(VisualObject):
     """
     ## %Effect type.
     type = None
-    _classses = {}
+    _classes = {}
 
     _props = [
         LottieProp("effect_index", "ix", int, False),
@@ -65,15 +65,15 @@ class Effect(VisualObject):
 
     @classmethod
     def _load_get_class(cls, lottiedict):
-        if not Effect._classses:
-            Effect._classses = {
+        if not Effect._classes:
+            Effect._classes = {
                 sc.type: sc
                 for sc in Effect.__subclasses__()
             }
         type = lottiedict["ty"]
 
-        if type in Effect._classses:
-            return Effect._classses[type]
+        if type in Effect._classes:
+            return Effect._classes[type]
         else:
             return Effect
 
@@ -482,3 +482,14 @@ class WavyEffect(Effect):
     ]
     ## %Effect type.
     type = 32
+
+
+#ingroup Lottie
+class TwirlEffect(Effect):
+    _effects = [
+        ("Angle", EffectValueAngle),
+        ("Radius", EffectValueSlider),
+        ("Center", EffectValuePoint),
+    ]
+    ## %Effect type.
+    type = 30

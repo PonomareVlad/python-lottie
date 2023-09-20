@@ -27,6 +27,7 @@ class Layer(VisualObject):
     _props = [
         LottieProp("threedimensional", "ddd", PseudoBool, False),
         LottieProp("hidden", "hd", bool, False),
+        LottieProp("is_guide", "guide", bool, False),
         LottieProp("type", "ty", int, False),
         LottieProp("index", "ind", int, False),
         LottieProp("parent_index", "parent", int, False),
@@ -58,6 +59,8 @@ class Layer(VisualObject):
         self.out_point = None
         ## Start Time of layer. Sets the start time of the layer.
         self.start_time = 0
+        ## When true, the layer should not be rendered
+        self.is_guide = None
 
     @classmethod
     def _load_get_class(cls, lottiedict):
@@ -87,6 +90,8 @@ class VisualLayer(Layer):
         LottieProp("blend_mode", "bm", BlendMode, False),
 
         LottieProp("matte_mode", "tt", MatteMode, False),
+        LottieProp("matte_target", "td", int, False),
+        LottieProp("matte_parent", "tp", int, False),
         LottieProp("css_class", "cl", str, False),
         LottieProp("layer_xml_id", "ln", str, False),
         LottieProp("layer_xml_tag_name", "tg", str, False),
@@ -97,7 +102,6 @@ class VisualLayer(Layer):
         LottieProp("has_masks", "hasMask", bool, False),
         LottieProp("masks", "masksProperties", Mask, True),
         LottieProp("effects", "ef", Effect, True),
-        LottieProp("matte_target", "td", int, False),
     ]
 
     @property
@@ -139,6 +143,7 @@ class VisualLayer(Layer):
         ## Matte mode, the layer will inherit the transparency from the layer above
         self.matte_mode = None
         self.matte_target = None
+        self.matte_parent = None
         ## Composition owning the layer, set by add_layer
         self.composition = None
 

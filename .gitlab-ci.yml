@@ -11,12 +11,21 @@ variables:
 stages:
     - test
     - build
+    - deploy
 
-pages:
+docs:
     stage: build
     script:
         - git clone https://github.com/twitter/twemoji.git
         - make -B docs -j 4
+    artifacts:
+        paths:
+            - docs/html
+
+pages:
+    stage: deploy
+    before_script:
+    script:
         - mv docs/html public
         - ls -l . htmlcov
         - mv htmlcov public/coverage
@@ -27,7 +36,10 @@ pages:
         - master
     dependencies:
         - test
-    needs: ["test"]
+        - docs
+    needs:
+        - test
+        - docs
 
 test:
     stage: test
